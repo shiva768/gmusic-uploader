@@ -1,11 +1,12 @@
 from audio_metadata import MP3
 from audio_metadata.formats.tables import ID3PictureType
 from google_music import MusicManager
+import google_music
 import random
 import glob
 import sys
 
-CREDENTIAL = './credential'
+CREDENTIAL = './'
 
 
 def main():
@@ -14,6 +15,7 @@ def main():
     if len(args) > 0:
         target = args[0]
     monkey_patch()
+    google_music.session.TOKEN_DIR = CREDENTIAL
     manager = MusicManager()
     list = glob.glob(f"{target}/*/*.mp3", recursive=True)
     for i in range(1, 1000):
