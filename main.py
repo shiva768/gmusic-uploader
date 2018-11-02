@@ -21,6 +21,7 @@ def main():
     for i in range(1, 1000):
         path = list[random.randint(1, len(list))]
         manager.upload(path)
+        print(f"success [{path}]")
 
 
 def monkey_patch():
