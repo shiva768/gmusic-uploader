@@ -1,17 +1,27 @@
 from audio_metadata import MP3
 from audio_metadata.formats.tables import ID3PictureType
 from google_music import MusicManager
+import random
+import glob
+import sys
 
 CREDENTIAL = './credential'
 
 
 def main():
-    monkeypatch()
+    args = sys.argv
+    target = '.'
+    if len(args) > 0:
+        target = args[0]
+    monkey_patch()
     manager = MusicManager()
-    manager.upload('path')
+    list = glob.glob(f"{target}/*/*.mp3", recursive=True)
+    for i in range(1, 1000):
+        path = list[random.randint(1, len(list))]
+        manager.upload(path)
 
 
-def monkeypatch():
+def monkey_patch():
     org = MP3.load
 
     def load(data):
