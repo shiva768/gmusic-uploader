@@ -33,8 +33,8 @@ def main():
             print(f"try [{path}]")
             manager.upload(path)
             print(f"success [{path}]")
-        except RetryError as e:
-            print(f"failed [{path}]")
+        except (RetryError, ValueError) as e:
+            print(f"failed [{path}] by {e.__class__}")
 
 
 
