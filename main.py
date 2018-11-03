@@ -12,14 +12,22 @@ CREDENTIAL = './'
 def main():
     args = sys.argv
     target = '.'
-    if len(args) > 0:
-        target = args[0]
+    max = 1000
+    print(args)
+    if len(args) > 2:
+        print(len(args))
+        target = args[1]
+        max = int(args[2])
     monkey_patch()
     google_music.session.TOKEN_DIR = CREDENTIAL
     manager = MusicManager()
-    list = glob.glob(f"{target}/*/*.mp3", recursive=True)
-    for i in range(1, 1000):
+    list = glob.glob(f"{target}/**/*.mp3", recursive=True)
+    if len(list) <= 0:
+        print('list empty')
+        sys.exit()
+    for i in range(1, max):
         path = list[random.randint(1, len(list))]
+        print(f"try [{path}]")
         manager.upload(path)
         print(f"success [{path}]")
 
