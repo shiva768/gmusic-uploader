@@ -6,18 +6,20 @@ import random
 import glob
 import sys
 
+from tenacity import RetryError
+
 CREDENTIAL = './'
 
 
 def main():
     args = sys.argv
     target = '.'
-    max = 1000
+    max_num = 1000
     print(args)
     if len(args) > 2:
         print(len(args))
         target = args[1]
-        max = int(args[2])
+        max_num = int(args[2])
     monkey_patch()
     google_music.session.TOKEN_DIR = CREDENTIAL
     manager = MusicManager()
@@ -25,11 +27,15 @@ def main():
     if len(list) <= 0:
         print('list empty')
         sys.exit()
-    for i in range(1, max):
+    for i in range(1, max_num):
         path = list[random.randint(1, len(list))]
-        print(f"try [{path}]")
-        manager.upload(path)
-        print(f"success [{path}]")
+        try:
+            print(f"try [{path}]")
+            manager.upload(path)
+            print(f"success [{path}]")
+        except RetryError as e:
+            print(f"failed [{path}]")
+
 
 
 def monkey_patch():
